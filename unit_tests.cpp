@@ -8,6 +8,9 @@
 
 BOOST_AUTO_TEST_SUITE(print_ip_test_suite)
 
+/**
+ * @brief Helper redirection fot tests
+ */
 struct cout_redirect 
 {
   cout_redirect(std::streambuf * new_buffer) 
