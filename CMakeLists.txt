@@ -1,0 +1,34 @@
+cmake_minimum_required(VERSION 3.2)
+
+if(NOT DEFINED ENV{TRAVIS_BUILD_NUMBER})
+  set(Boost_ARCHITECTURE "-x32")
+  set(ENV{TRAVIS_BUILD_NUMBER} "1")
+endif()
+
+project(print_ip VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
+
+find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+
+add_executable(print_ip main.cpp)
+add_executable(unit_tests unit_tests.cpp)
+
+set_target_properties(print_ip unit_tests PROPERTIES
+  CXX_STANDARD 14
+  CXX_STANDARD_REQUIRED ON 
+  COMPILE_OPTIONS "-Wall;-Wpedantic;-Wextra"
+)
+
+set_target_properties(unit_tests PROPERTIES
+  #COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
+  INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
+)
+
+target_link_libraries(unit_tests 
+  ${Boost_LIBRARIES}
+)
+
+install(TARGETS print_ip RUNTIME DESTINATION bin)
+
+enable_testing()
+
+add_test(NAME print_ip_test COMMAND unit_tests)
