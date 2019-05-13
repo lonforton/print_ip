@@ -1,3 +1,7 @@
+/**
+ * @name unit_tests
+ */
+
 #define BOOST_TEST_MODULE allocator_test_module
 
 #include <boost/test/unit_test.hpp>
