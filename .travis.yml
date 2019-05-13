@@ -1,6 +1,10 @@
 dist: xenial
 language: cpp
 compiler: clang
+addons:
+  apt:
+    packages:
+      - doxygen
 before_script:
 - sudo apt update
 - sudo apt install libboost-test-dev -y
@@ -21,4 +25,3 @@ deploy:
   github_token: $GH_REPO_TOKEN
   on:
     branch: master
-    
