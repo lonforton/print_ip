@@ -12,47 +12,75 @@
  * @return true - type is char or unsigned char, false - otherwise
  */
 template <typename T>
-struct is_char_type
+struct is_char
 {
   static bool const value = std::is_same<T, char>::value || std::is_same<T, unsigned char>::value;
 };
+
+/**
+ * @brief Char type value helper
+ * @return true - type is char, false - otherwise
+ */
+template <typename T>
+constexpr bool is_char_v = is_char<T>::value;
 
 /**
  * @brief Check if type is numeric 
  * @return true - type is numeric, false - otherwise
  */
 template <typename T>
-struct is_numeric_type
+struct is_numeric
 {
-  static bool const value = !is_char_type<T>::value && std::is_arithmetic<T>::value;
+  static bool const value = !is_char<T>::value && std::is_arithmetic<T>::value;
 };
+
+/**
+ * @brief Numeric type value helper
+ * @return true - type is numeric, false - otherwise
+ */
+template <typename T>
+constexpr bool is_numeric_v = is_numeric<T>::value;
 
 /**
  * @brief Check if type is string 
  * @return true - type is string, false - otherwise
  */
 template <typename T>
-struct is_string_type
+struct is_string
 {
   static bool const value = std::is_same<T, std::string>::value;
 };
+
+/**
+ * @brief String type value helper
+ * @return true - type is string, false - otherwise
+ */
+template <typename T>
+constexpr bool is_string_v = is_string<T>::value;
 
 /**
  * @brief Helper for checking if type is container 
  * @return false - always
  */
 template <typename T>
-struct is_container_type
+struct is_container
 {
   static bool const value = false;
 };
+
+/**
+ * @brief Container type value helper
+ * @return true - type is container, false - otherwise
+ */
+template <typename T>
+constexpr bool is_container_v = is_container<T>::value;
 
 /**
  * @brief Check if type is std::list 
  * @return true - type is std::list
  */
 template <typename T, typename Alloc>
-struct is_container_type<std::list<T, Alloc>>
+struct is_container<std::list<T, Alloc>>
 {
   static bool const value = true;
 };
@@ -62,7 +90,7 @@ struct is_container_type<std::list<T, Alloc>>
  * @return true - type is std::vector
  */
 template <typename T, typename Alloc>
-struct is_container_type<std::vector<T, Alloc>>
+struct is_container<std::vector<T, Alloc>>
 {
   static bool const value = true;
 };
@@ -97,7 +125,6 @@ std::vector<uint8_t> bytes_form(T numeric_ip)
     uint8_t byte = numeric_ip >> (i * 8); 
     bytes.insert(bytes.begin(), byte);
   }
-
   return bytes;
 }
 
@@ -107,7 +134,7 @@ std::vector<uint8_t> bytes_form(T numeric_ip)
  * @return 
  */
 template <typename T>
-typename std::enable_if<is_char_type<T>::value>::type
+typename std::enable_if<is_char_v<T>>::type
 print_ip(T ip)
 {
   std::cout << static_cast<int>(static_cast<unsigned char>(ip)) << std::endl;
@@ -119,7 +146,7 @@ print_ip(T ip)
  * @return 
  */
 template <typename T>
-typename std::enable_if<is_numeric_type<T>::value>::type
+typename std::enable_if<is_numeric_v<T>>::type
 print_ip(T ip)
 {
     std::cout << bytes_form(ip) << std::endl;
@@ -131,7 +158,7 @@ print_ip(T ip)
  * @return 
  */
 template <typename T>
-typename std::enable_if<is_string_type<T>::value>::type
+typename std::enable_if<is_string_v<T>>::type
 print_ip(T ip)
 {
   std::cout << ip << std::endl;
@@ -143,7 +170,7 @@ print_ip(T ip)
  * @return 
  */
 template <typename Container>
-typename std::enable_if<is_container_type<Container>::value>::type
+typename std::enable_if<is_container_v<Container>>::type
 print_ip(Container &container)
 {
   bool first = true;
