@@ -15,7 +15,7 @@ add_executable(unit_tests unit_tests.cpp)
 set_target_properties(print_ip unit_tests PROPERTIES
   CXX_STANDARD 17
   CXX_STANDARD_REQUIRED ON 
-  COMPILE_OPTIONS "-Wall;-Wpedantic;-Wextra"
+  COMPILE_OPTIONS "-Wall;-Wpedantic;-Wextra;-stdlib=libc++"
 )
 
 set_target_properties(unit_tests PROPERTIES
