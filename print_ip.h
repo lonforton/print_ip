@@ -8,30 +8,13 @@
 #include <vector>
 
 /**
- * @brief Check if type is char or unsigned char
- * @return true - type is char or unsigned char, false - otherwise
- */
-template <typename T>
-struct is_char
-{
-  static bool const value = std::is_same<T, char>::value || std::is_same<T, unsigned char>::value;
-};
-
-/**
- * @brief Char type value helper
- * @return true - type is char, false - otherwise
- */
-template <typename T>
-constexpr bool is_char_v = is_char<T>::value;
-
-/**
  * @brief Check if type is numeric 
  * @return true - type is numeric, false - otherwise
  */
 template <typename T>
 struct is_numeric
 {
-  static bool const value = !is_char<T>::value && std::is_arithmetic<T>::value;
+  static bool const value = std::is_arithmetic_v<T>;
 };
 
 /**
@@ -129,24 +112,12 @@ std::vector<uint8_t> bytes_form(T numeric_ip)
 }
 
 /**
- * @brief print for char types
- * @param [in] ip representation as char type
- * @return 
- */
-template <typename T>
-typename std::enable_if<is_char_v<T>>::type
-print_ip(T ip)
-{
-  std::cout << static_cast<int>(static_cast<unsigned char>(ip)) << std::endl;
-}
-
-/**
  * @brief print for numeric types
  * @param [in] ip representation as numeric type
  * @return 
  */
 template <typename T>
-typename std::enable_if<is_numeric_v<T>>::type
+typename std::enable_if_t<is_numeric_v<T>>
 print_ip(T ip)
 {
     std::cout << bytes_form(ip) << std::endl;
@@ -157,12 +128,10 @@ print_ip(T ip)
  * @param [in] ip representation as string type
  * @return 
  */
-template <typename T>
-typename std::enable_if<is_string_v<T>>::type
-print_ip(T ip)
-{
-  std::cout << ip << std::endl;
-}
+ void print_ip(std::string ip)
+ {
+   std::cout << ip << std::endl;
+ }
 
 /**
  * @brief print for containers types
@@ -170,7 +139,7 @@ print_ip(T ip)
  * @return 
  */
 template <typename Container>
-typename std::enable_if<is_container_v<Container>>::type
+typename std::enable_if_t<is_container_v<Container>>
 print_ip(Container &container)
 {
   bool first = true;
