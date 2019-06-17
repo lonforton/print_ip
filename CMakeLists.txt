@@ -13,7 +13,7 @@ add_executable(print_ip main.cpp)
 add_executable(unit_tests unit_tests.cpp)
 
 set_target_properties(print_ip unit_tests PROPERTIES
-  CXX_STANDARD 14
+  CXX_STANDARD 17
   CXX_STANDARD_REQUIRED ON 
   COMPILE_OPTIONS "-Wall;-Wpedantic;-Wextra"
 )
