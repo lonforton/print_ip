@@ -4,6 +4,7 @@ compiler: clang
 before_script:
 - sudo apt update
 - sudo apt install libboost-test-dev -y
+- sudo apt install libstdc++-7-dev
 - sudo apt install doxygen
 script:
 - cmake .
